@@ -176,7 +176,6 @@ Request Parameters:
 | namespace        | Namespace of the role                                            | String |
 | name             | name of the role                                                 | String |
 | memberReferences | users / groups to be added to the role `<kind>:<default>/<name>` | String |
-| name             | name of the role                                                 | String |
 
 before:
 
@@ -511,7 +510,7 @@ Conditional permission policies are fairly complex. For more information on how 
 
 ### GET conditional rules
 
-GET <api/plugins/condition-rules>
+GET </api/plugins/condition-rules>
 
 Provides conditional rule parameter schemas.
 
