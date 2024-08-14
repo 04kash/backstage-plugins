@@ -27,7 +27,8 @@ import {
   EntityProviderConnection,
 } from '@backstage/plugin-catalog-node';
 
-import KcAdminClient from '@keycloak/keycloak-admin-client';
+// import { dynamicImport } from '../keycloak-client';
+
 import type { Credentials } from '@keycloak/keycloak-admin-client/lib/utils/auth';
 import { merge } from 'lodash';
 import * as uuid from 'uuid';
@@ -189,10 +190,17 @@ export class KeycloakOrgEntityProvider implements EntityProvider {
     const provider = this.options.provider;
 
     const { markReadComplete } = trackProgress(logger);
-    const kcAdminClient = new KcAdminClient({
+
+    const KCadmCli = await import('@keycloak/keycloak-admin-client');
+    console.log('KC');
+    console.log(KCadmCli);
+
+    const kcAdminClient = new KCadmCli.default({
       baseUrl: provider.baseUrl,
       realmName: provider.loginRealm,
     });
+    // console.log("In here");
+    // console.log(kcAdminClient)
 
     let credentials: Credentials;
 
@@ -214,8 +222,11 @@ export class KeycloakOrgEntityProvider implements EntityProvider {
         `username and password or clientId and clientSecret must be provided.`,
       );
     }
+    console.log('In entityOrg');
+    console.log(kcAdminClient.auth);
 
     await kcAdminClient.auth(credentials);
+    console.log('successful');
 
     const { users, groups } = await readKeycloakRealm(kcAdminClient, provider, {
       userQuerySize: provider.userQuerySize,
